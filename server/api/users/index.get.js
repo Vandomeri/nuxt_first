@@ -6,8 +6,6 @@ export default defineEventHandler(async (event) => {
 
     const resp = await prisma.users.findMany()
 
-    return {
-        users: resp
-    }
+    return resp
 
 })

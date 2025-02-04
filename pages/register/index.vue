@@ -40,8 +40,6 @@ async function registerUser() {
 
     if (data.value.status === 'ok') {
         status.value = 'Вы успешно зарегестрировались'
-        router.push('/')
-
     }
 
 }

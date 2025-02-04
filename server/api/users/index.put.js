@@ -6,12 +6,17 @@ export default defineEventHandler(async (event) => {
 
     const prisma = new PrismaClient()
 
-    const resp = await prisma.users.delete({
+    const resp = await prisma.users.update({
         where: {
             id: body.id
+        },
+        data: {
+            name: body.name,
+            email: body.email,
+            password: body.password
         }
     })
 
-    return resp
 
+    return
 })

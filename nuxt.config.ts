@@ -8,6 +8,9 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
+  modules: [
+    'vuetify-nuxt-module'
+  ],
   vite: {
     plugins: [
       tailwindcss()
