@@ -18,6 +18,8 @@ model users {
   name     String
   email    String
   password String
+  role     String  @default("user")
+  age      Int     @default(20)
   posts    posts[]
 }
 

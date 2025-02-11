@@ -35,7 +35,6 @@ async function createPost() {
     post.description = ''
     post.text = ''
     post.userId = null
-    await nextTick()
 }
 
 </script>

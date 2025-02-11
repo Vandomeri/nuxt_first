@@ -1,5 +1,28 @@
 <template>
 
+    <div class="my-5">
+
+
+        <v-range-slider v-model="range" :max="70" :min="15" :step="1" class="align-center w-1/2" hide-details>
+            <template v-slot:prepend>
+                <v-text-field v-model="range[0]" density="compact" style="width: 70px" type="number" variant="outlined"
+                    hide-details single-line></v-text-field>
+            </template>
+            <template v-slot:append>
+                <v-text-field v-model="range[1]" density="compact" style="width: 70px" type="number" variant="outlined"
+                    hide-details single-line></v-text-field>
+            </template>
+        </v-range-slider>
+
+        <v-radio-group v-model="roleFitler">
+            <v-radio label="Админ" value="admin"></v-radio>
+            <v-radio label="Пользователь" value="user"></v-radio>
+        </v-radio-group>
+
+        <v-btn @click="linkBuilder">Применить фильтр</v-btn>
+
+    </div>
+
     <v-text-field v-model="search" label="Поиск по таблице..."></v-text-field>
     <v-data-table :headers="headers" :items="users" :search="search">
 
@@ -41,6 +64,9 @@
 </template>
 
 <script setup>
+const baseURL = 'http://localhost:3000/api/users'
+const range = ref([])
+const roleFitler = ref(null)
 
 const headers = ref([
     { title: 'АйДи', key: 'id' },
@@ -50,6 +76,25 @@ const headers = ref([
     { title: 'Действия', key: 'actions' },
 
 ])
+
+const { data: users, refresh } = await useFetch('/api/users')
+
+async function linkBuilder() {
+    const url = new URL(baseURL)
+
+    url.searchParams.append('min_age', range.value[0])
+    url.searchParams.append('max_age', range.value[1])
+
+
+    if (roleFitler.value) {
+        url.searchParams.append('role', roleFitler.value)
+    }
+
+    console.log(url.toString())
+
+    const resp = await $fetch(url.toString())
+    users.value = resp
+}
 
 
 const modalForm = reactive({
@@ -61,7 +106,6 @@ const modalForm = reactive({
 
 const showModal = ref(false)
 
-const { data: users, refresh } = await useFetch('/api/users')
 
 
 const search = ref('')
